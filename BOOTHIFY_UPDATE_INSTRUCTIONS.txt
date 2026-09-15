@@ -1,0 +1,84 @@
+BOOTHIFY - COMPLETE UPDATED PROJECT
+==================================
+
+This ZIP contains the complete Boothify project, including the existing source,
+assets, public files, node_modules and existing .next build files from the
+uploaded project. Existing content and images have NOT been intentionally removed.
+
+NEW FEATURES
+------------
+1. Admin Dashboard -> Hero Images
+   - Add image from computer
+   - Add image by URL
+   - Preview
+   - Active / Inactive
+   - Display order
+   - Delete
+
+2. Admin Dashboard -> Our Finest Work
+   - New portfolio CMS
+   - Add image from computer
+   - Add image by URL
+   - Title, description, category, alt text
+   - Active / Inactive
+   - Display order
+   - Delete
+   - The original 9 portfolio cards are seeded into the new table so the old
+     content/images remain available.
+
+3. Admin Dashboard -> Gallery / Photos
+   - Existing gallery management retained
+   - Add image from computer
+   - Add image by URL
+   - Preview
+   - Category, title, alt text, display order
+   - Active / Inactive
+   - Delete
+
+4. Home Page
+   - Hero now reads active hero_images from Supabase.
+   - Our Finest Work now reads active portfolio_items from Supabase.
+   - New Gallery section reads active gallery_photos from Supabase.
+   - Original Hero and Portfolio content remains as fallback/seed data.
+
+SUPABASE MIGRATION
+------------------
+Run this file in Supabase SQL Editor AFTER the existing Boothify admin migration:
+
+supabase/migrations/20260913153200_boothify_home_cms.sql
+
+Do NOT delete the existing tables:
+- clientele_logos
+- testimonials
+- gallery_photos
+- cities
+- contact_details
+- form_responses
+
+The migration is additive and keeps existing gallery/clientele/testimonial/etc.
+data.
+
+DEPLOYMENT
+----------
+Because .next is a generated build folder, rebuild the application after copying
+this project to your hosting/deployment environment.
+
+Recommended:
+  npm install
+  npm run build
+  npm run start
+
+For development:
+  npm run dev
+
+The existing project uses port 4028 for the dev script.
+
+IMPORTANT
+---------
+The ZIP includes the original node_modules and .next folder because this was
+requested as a complete project ZIP. If your hosting provider performs its own
+build, it will regenerate .next. Do not rely on the included old .next build.
+
+If Supabase reports a policy/storage error when uploading, confirm that the
+migration above was executed and that your existing admin user has role='admin'
+in public.user_profiles.

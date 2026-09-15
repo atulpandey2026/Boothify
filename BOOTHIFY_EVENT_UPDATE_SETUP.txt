@@ -1,0 +1,9 @@
+BOOTHIFY EVENT UPDATES SETUP
+
+1. Open Supabase -> SQL Editor.
+2. Run: supabase/migrations/20260915130000_boothify_event_updates.sql
+3. Open /admin/dashboard/event-updates.
+4. Add/edit/activate/deactivate events.
+5. The first 3 active Boothify events appear on the right side of the Home Page hero.
+
+The event data is stored in public.event_updates and is isolated with site=boothify.
