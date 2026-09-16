@@ -107,15 +107,15 @@ export default function ClienteleSection() {
         </div>
 
         {/* Row 1 */}
-        <div className="marquee-wrapper mb-6">
-          <div className="animate-marquee-left flex items-center gap-6">
+        <div className="marquee-wrapper mb-4">
+          <div className="animate-marquee-left flex items-center gap-4">
 
             {logosDouble.map((client, i) => {
               const isDatabaseLogo = 'logo_url' in client;
 
               const content = (
                 <div
-                  className={`flex-shrink-0 flex items-center justify-center gap-3 border rounded-xl px-8 py-6 min-w-[220px] ${
+                  className={`flex-shrink-0 flex items-center justify-center gap-3 border rounded-xl p-2 min-w-[160px] h-[60px] ${
                     !isDatabaseLogo
                       ? client.color
                       : 'bg-white border-gray-200'
@@ -125,15 +125,15 @@ export default function ClienteleSection() {
                     <img
                       src={client.image_src}
                       alt={client.name}
-                      className="max-h-20 max-w-[180px] object-contain"
+                      className="w-full h-full max-h-12 object-contain"
                     />
                   ) : (
                     <>
-                      <span className="text-xl font-800 tracking-tight">
+                      <span className="text-lg font-800 tracking-tight">
                         {client.abbr}
                       </span>
 
-                      <span className="text-sm font-500 opacity-70 hidden sm:block">
+                      <span className="text-xs font-500 opacity-70 hidden sm:block">
                         {client.name}
                       </span>
                     </>
@@ -166,14 +166,14 @@ export default function ClienteleSection() {
 
         {/* Row 2 */}
         <div className="marquee-wrapper">
-          <div className="animate-marquee-right flex items-center gap-6">
+          <div className="animate-marquee-right flex items-center gap-4">
 
             {[...logosDouble].reverse().map((client, i) => {
               const isDatabaseLogo = 'logo_url' in client;
 
               const content = (
                 <div
-                  className={`flex-shrink-0 flex items-center justify-center gap-3 border rounded-xl px-8 py-6 min-w-[220px] ${
+                  className={`flex-shrink-0 flex items-center justify-center gap-3 border rounded-xl p-2 min-w-[160px] h-[60px] ${
                     !isDatabaseLogo
                       ? client.color
                       : 'bg-white border-gray-200'
@@ -183,15 +183,15 @@ export default function ClienteleSection() {
                     <img
                       src={client.image_src}
                       alt={client.name}
-                      className="max-h-20 max-w-[180px] object-contain"
+                      className="w-full h-full max-h-12 object-contain"
                     />
                   ) : (
                     <>
-                      <span className="text-xl font-800 tracking-tight">
+                      <span className="text-lg font-800 tracking-tight">
                         {client.abbr}
                       </span>
 
-                      <span className="text-sm font-500 opacity-70 hidden sm:block">
+                      <span className="text-xs font-500 opacity-70 hidden sm:block">
                         {client.name}
                       </span>
                     </>
