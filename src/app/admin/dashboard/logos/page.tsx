@@ -20,8 +20,17 @@ export default function LogosPage() {
   const [error, setError] = useState('');
   const [newName, setNewName] = useState('');
   const [newWebsite, setNewWebsite] = useState('');
+  const [newLogoUrl, setNewLogoUrl] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
+
+  const getLogoSrc = (logoUrl: string) => {
+    const value = (logoUrl || '').trim();
+    if (/^https?:\/\//i.test(value)) {
+      return `/api/image-proxy?url=${encodeURIComponent(value)}`;
+    }
+    return value;
+  };
 
   async function fetchLogos() {
     const { data, error } = await supabase
@@ -36,31 +45,77 @@ export default function LogosPage() {
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
-    if (!newName.trim()) { setError('Please enter a client name.'); return; }
+
+    if (!newName.trim()) {
+      setError('Please enter a client name.');
+      return;
+    }
+
     const file = fileInputRef.current?.files?.[0];
+    const externalLogoUrl = newLogoUrl.trim();
+
+    if (!file && !externalLogoUrl) {
+      setError('Please upload a logo image or enter a logo image URL.');
+      return;
+    }
+
+    if (externalLogoUrl) {
+      try {
+        const parsedUrl = new URL(externalLogoUrl);
+        if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+          throw new Error();
+        }
+      } catch {
+        setError('Please enter a valid image URL starting with http:// or https://');
+        return;
+      }
+    }
+
     setUploading(true);
     setError('');
+
     try {
-      let logoUrl = '';
+      let logoUrl = externalLogoUrl;
+
+      // If a file is selected, upload it to Supabase Storage.
+      // Otherwise, use the external image URL directly.
       if (file) {
         const ext = file.name.split('.').pop();
         const path = `${Date.now()}.${ext}`;
-        const { error: uploadError } = await supabase.storage.from('clientele-logos').upload(path, file, { upsert: true });
+
+        const { error: uploadError } = await supabase.storage
+          .from('clientele-logos')
+          .upload(path, file, { upsert: true });
+
         if (uploadError) throw uploadError;
-        const { data: { publicUrl } } = supabase.storage.from('clientele-logos').getPublicUrl(path);
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('clientele-logos')
+          .getPublicUrl(path);
+
         logoUrl = publicUrl;
       }
-      const { error: insertError } = await supabase.from('clientele_logos').insert({
-        name: newName.trim(),
-        logo_url: logoUrl,
-        website_url: newWebsite.trim(),
-        display_order: logos.length + 1,
-        is_active: true,
-      });
+
+      const { error: insertError } = await supabase
+        .from('clientele_logos')
+        .insert({
+          name: newName.trim(),
+          logo_url: logoUrl,
+          website_url: newWebsite.trim(),
+          display_order: logos.length + 1,
+          is_active: true,
+        });
+
       if (insertError) throw insertError;
+
       setNewName('');
       setNewWebsite('');
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      setNewLogoUrl('');
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+
       await fetchLogos();
     } catch (err: any) {
       setError(err?.message || 'Upload failed.');
@@ -118,15 +173,42 @@ export default function LogosPage() {
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-xs font-600 text-gray-600 mb-1.5">Logo Image (optional)</label>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-600 file:bg-violet-50 file:text-violet-700"
-              />
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-600 text-gray-600 mb-1.5">
+                  Upload Logo Image
+                </label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-600 file:bg-violet-50 file:text-violet-700"
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Upload from your computer.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-600 text-gray-600 mb-1.5">
+                  Or Logo Image URL
+                </label>
+                <input
+                  type="url"
+                  value={newLogoUrl}
+                  onChange={(e) => setNewLogoUrl(e.target.value)}
+                  placeholder="https://example.com/logo.png"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Use a direct public image URL.
+                </p>
+              </div>
             </div>
+
+            <p className="text-xs text-gray-500">
+              Choose either an uploaded image or an image URL. If both are provided, the uploaded image will be used.
+            </p>
             {error && <p className="text-red-600 text-sm">{error}</p>}
             <button
               type="submit"
@@ -153,7 +235,7 @@ export default function LogosPage() {
                 <li key={logo.id} className="flex items-center gap-4 px-6 py-4">
                   <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                     {logo.logo_url ? (
-                      <img src={logo.logo_url} alt={logo.name} className="w-full h-full object-contain p-1" />
+                      <img src={getLogoSrc(logo.logo_url)} alt={logo.name} className="w-full h-full object-contain p-1" />
                     ) : (
                       <span className="text-xs font-700 text-gray-400">{logo.name?.charAt(0)}</span>
                     )}

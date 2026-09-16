@@ -55,6 +55,14 @@ export default function ClienteleSection() {
     fetchLogos();
   }, []);
 
+  const getLogoSrc = (logoUrl: string) => {
+    const value = (logoUrl || '').trim();
+    if (/^https?:\/\//i.test(value)) {
+      return `/api/image-proxy?url=${encodeURIComponent(value)}`;
+    }
+    return value;
+  };
+
   const databaseLogos = logos.map((logo) => ({
     name: logo.name,
     abbr: logo.name
@@ -64,6 +72,7 @@ export default function ClienteleSection() {
       .slice(0, 6)
       .toUpperCase(),
     logo_url: logo.logo_url,
+    image_src: getLogoSrc(logo.logo_url),
     website_url: logo.website_url,
   }));
 
@@ -114,7 +123,7 @@ export default function ClienteleSection() {
                 >
                   {isDatabaseLogo && client.logo_url ? (
                     <img
-                      src={client.logo_url}
+                      src={client.image_src}
                       alt={client.name}
                       className="max-h-10 max-w-[130px] object-contain"
                     />
@@ -172,7 +181,7 @@ export default function ClienteleSection() {
                 >
                   {isDatabaseLogo && client.logo_url ? (
                     <img
-                      src={client.logo_url}
+                      src={client.image_src}
                       alt={client.name}
                       className="max-h-10 max-w-[130px] object-contain"
                     />
