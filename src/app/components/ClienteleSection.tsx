@@ -12,7 +12,6 @@ interface ClientLogo {
   is_active?: boolean;
 }
 
-// Added logo_url to fallback items so images render even without Supabase data
 const fallbackClientele = [
   { name: 'Tata Group', logo_url: 'https://logo.clearbit.com/tata.com', website_url: 'https://tata.com' },
   { name: 'Reliance Industries', logo_url: 'https://logo.clearbit.com/ril.com', website_url: 'https://ril.com' },
@@ -104,11 +103,11 @@ export default function ClienteleSection() {
 
             {logosDouble.map((client, i) => {
               const content = (
-                <div className="flex-shrink-0 flex items-center justify-center border rounded-xl p-3 min-w-[220px] h-[90px] bg-white border-gray-200">
+                <div className="flex-shrink-0 flex items-center justify-center border rounded-xl overflow-hidden min-w-[200px] h-[90px] bg-white border-gray-200">
                   <img
                     src={client.image_src}
                     alt={client.name}
-                    className="w-full h-full object-contain p-1"
+                    className="w-full h-full object-contain scale-135 p-1"
                   />
                 </div>
               );
@@ -134,11 +133,11 @@ export default function ClienteleSection() {
 
             {[...logosDouble].reverse().map((client, i) => {
               const content = (
-                <div className="flex-shrink-0 flex items-center justify-center border rounded-xl p-3 min-w-[220px] h-[90px] bg-white border-gray-200">
+                <div className="flex-shrink-0 flex items-center justify-center border rounded-xl overflow-hidden min-w-[200px] h-[90px] bg-white border-gray-200">
                   <img
                     src={client.image_src}
                     alt={client.name}
-                    className="w-full h-full object-contain p-1"
+                    className="w-full h-full object-contain scale-135 p-1"
                   />
                 </div>
               );
