@@ -4,27 +4,28 @@ import React, { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 interface ClientLogo {
-  id: string;
+  id?: string;
   name: string;
   logo_url: string;
-  website_url: string;
-  display_order: number;
-  is_active: boolean;
+  website_url?: string;
+  display_order?: number;
+  is_active?: boolean;
 }
 
+// Added logo_url to fallback items so images render even without Supabase data
 const fallbackClientele = [
-  { name: 'Tata Group', abbr: 'TATA', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-  { name: 'Reliance Industries', abbr: 'RIL', color: 'bg-violet-50 text-violet-700 border-violet-200' },
-  { name: 'Infosys', abbr: 'INFY', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  { name: 'HDFC Bank', abbr: 'HDFC', color: 'bg-pink-50 text-pink-700 border-pink-200' },
-  { name: 'Mahindra', abbr: 'M&M', color: 'bg-amber-50 text-amber-700 border-amber-200' },
-  { name: 'Wipro', abbr: 'WPRO', color: 'bg-cyan-50 text-cyan-700 border-cyan-200' },
-  { name: 'Bajaj Auto', abbr: 'BAJAJ', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-  { name: 'Maruti Suzuki', abbr: 'MSIL', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-  { name: 'ITC Limited', abbr: 'ITC', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-  { name: 'Godrej Group', abbr: 'GODREJ', color: 'bg-teal-50 text-teal-700 border-teal-200' },
-  { name: 'Asian Paints', abbr: 'APNT', color: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' },
-  { name: 'Hindustan Unilever', abbr: 'HUL', color: 'bg-lime-50 text-lime-700 border-lime-200' },
+  { name: 'Tata Group', logo_url: 'https://logo.clearbit.com/tata.com', website_url: 'https://tata.com' },
+  { name: 'Reliance Industries', logo_url: 'https://logo.clearbit.com/ril.com', website_url: 'https://ril.com' },
+  { name: 'Infosys', logo_url: 'https://logo.clearbit.com/infosys.com', website_url: 'https://infosys.com' },
+  { name: 'HDFC Bank', logo_url: 'https://logo.clearbit.com/hdfcbank.com', website_url: 'https://hdfcbank.com' },
+  { name: 'Mahindra', logo_url: 'https://logo.clearbit.com/mahindra.com', website_url: 'https://mahindra.com' },
+  { name: 'Wipro', logo_url: 'https://logo.clearbit.com/wipro.com', website_url: 'https://wipro.com' },
+  { name: 'Bajaj Auto', logo_url: 'https://logo.clearbit.com/bajajauto.com', website_url: 'https://bajajauto.com' },
+  { name: 'Maruti Suzuki', logo_url: 'https://logo.clearbit.com/marutisuzuki.com', website_url: 'https://marutisuzuki.com' },
+  { name: 'ITC Limited', logo_url: 'https://logo.clearbit.com/itcportal.com', website_url: 'https://itcportal.com' },
+  { name: 'Godrej Group', logo_url: 'https://logo.clearbit.com/godrej.com', website_url: 'https://godrej.com' },
+  { name: 'Asian Paints', logo_url: 'https://logo.clearbit.com/asianpaints.com', website_url: 'https://asianpaints.com' },
+  { name: 'Hindustan Unilever', logo_url: 'https://logo.clearbit.com/hul.co.in', website_url: 'https://hul.co.in' },
 ];
 
 export default function ClienteleSection() {
@@ -63,23 +64,14 @@ export default function ClienteleSection() {
     return value;
   };
 
-  const databaseLogos = logos.map((logo) => ({
+  const rawLogos = !loading && logos.length > 0 ? logos : fallbackClientele;
+
+  const displayLogos = rawLogos.map((logo) => ({
     name: logo.name,
-    abbr: logo.name
-      .split(' ')
-      .map((word) => word.charAt(0))
-      .join('')
-      .slice(0, 6)
-      .toUpperCase(),
     logo_url: logo.logo_url,
     image_src: getLogoSrc(logo.logo_url),
-    website_url: logo.website_url,
+    website_url: logo.website_url || '#',
   }));
-
-  const displayLogos =
-    !loading && databaseLogos.length > 0
-      ? databaseLogos
-      : fallbackClientele;
 
   const logosDouble = [...displayLogos, ...displayLogos];
 
@@ -111,53 +103,25 @@ export default function ClienteleSection() {
           <div className="animate-marquee-left flex items-center gap-5">
 
             {logosDouble.map((client, i) => {
-              const isDatabaseLogo = 'logo_url' in client;
-
               const content = (
-                <div
-                  className={`flex-shrink-0 flex items-center justify-center gap-3 border rounded-xl p-3 min-w-[200px] h-[80px] ${
-                    !isDatabaseLogo
-                      ? client.color
-                      : 'bg-white border-gray-200'
-                  }`}
-                >
-                  {isDatabaseLogo && client.logo_url ? (
-                    <img
-                      src={client.image_src}
-                      alt={client.name}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <>
-                      <span className="text-xl font-800 tracking-tight">
-                        {client.abbr}
-                      </span>
-
-                      <span className="text-sm font-500 opacity-70 hidden sm:block">
-                        {client.name}
-                      </span>
-                    </>
-                  )}
+                <div className="flex-shrink-0 flex items-center justify-center border rounded-xl p-3 min-w-[220px] h-[90px] bg-white border-gray-200">
+                  <img
+                    src={client.image_src}
+                    alt={client.name}
+                    className="w-full h-full object-contain p-1"
+                  />
                 </div>
               );
 
-              if (isDatabaseLogo && client.website_url) {
-                return (
-                  <a
-                    key={`${client.name}-${i}`}
-                    href={client.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {content}
-                  </a>
-                );
-              }
-
               return (
-                <React.Fragment key={`${client.name}-${i}`}>
+                <a
+                  key={`${client.name}-${i}`}
+                  href={client.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {content}
-                </React.Fragment>
+                </a>
               );
             })}
 
@@ -169,53 +133,25 @@ export default function ClienteleSection() {
           <div className="animate-marquee-right flex items-center gap-5">
 
             {[...logosDouble].reverse().map((client, i) => {
-              const isDatabaseLogo = 'logo_url' in client;
-
               const content = (
-                <div
-                  className={`flex-shrink-0 flex items-center justify-center gap-3 border rounded-xl p-3 min-w-[200px] h-[80px] ${
-                    !isDatabaseLogo
-                      ? client.color
-                      : 'bg-white border-gray-200'
-                  }`}
-                >
-                  {isDatabaseLogo && client.logo_url ? (
-                    <img
-                      src={client.image_src}
-                      alt={client.name}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <>
-                      <span className="text-xl font-800 tracking-tight">
-                        {client.abbr}
-                      </span>
-
-                      <span className="text-sm font-500 opacity-70 hidden sm:block">
-                        {client.name}
-                      </span>
-                    </>
-                  )}
+                <div className="flex-shrink-0 flex items-center justify-center border rounded-xl p-3 min-w-[220px] h-[90px] bg-white border-gray-200">
+                  <img
+                    src={client.image_src}
+                    alt={client.name}
+                    className="w-full h-full object-contain p-1"
+                  />
                 </div>
               );
 
-              if (isDatabaseLogo && client.website_url) {
-                return (
-                  <a
-                    key={`${client.name}-reverse-${i}`}
-                    href={client.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {content}
-                  </a>
-                );
-              }
-
               return (
-                <React.Fragment key={`${client.name}-reverse-${i}`}>
+                <a
+                  key={`${client.name}-reverse-${i}`}
+                  href={client.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {content}
-                </React.Fragment>
+                </a>
               );
             })}
 
