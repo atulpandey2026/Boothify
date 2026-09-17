@@ -38,7 +38,7 @@ export default function HomePage() {
         <HeroSection />
         <StatsBar />
         <PortfolioSection />
-        <GallerySection />
+        
         <ServicesSection />
         <ProcessSection />
         <ClienteleSection />
