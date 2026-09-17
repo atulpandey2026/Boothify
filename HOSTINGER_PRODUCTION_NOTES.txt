@@ -1,0 +1,14 @@
+BOOTHIFY HOSTINGER DEPLOYMENT NOTES
+
+1. Production start command is:
+   npm start
+
+2. This runs:
+   next start
+
+3. Keep Supabase environment variables configured in Hostinger.
+4. Deploy the same GitHub branch that contains this project.
+5. After deployment, use an incognito window or Ctrl+Shift+R if old assets are cached.
+
+The Supabase database tables are not created by Next.js deployment. Make sure the
+required Supabase migrations/SQL have already been run in the Supabase project.
