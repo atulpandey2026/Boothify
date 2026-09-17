@@ -6,7 +6,7 @@ const cities = ['Delhi', 'Mumbai', 'Lucknow', 'Chennai', 'Bengaluru', 'Ahmedabad
 const socialLinks = [
   {
     label: 'LinkedIn',
-    href: 'linkedin.com/company/boothify-bng',
+    href: 'https://linkedin.com/company/boothify-bng',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -88,6 +88,8 @@ export default function Footer() {
                   <a
                     key={s?.label}
                     href={s?.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={s?.label}
                     className="w-9 h-9 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 hover:text-violet-600 hover:border-violet-300 transition-colors"
                   >
