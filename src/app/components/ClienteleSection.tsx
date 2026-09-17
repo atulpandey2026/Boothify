@@ -157,37 +157,6 @@ export default function ClienteleSection() {
           </div>
         </div>
 
-        {/* Trust indicators */}
-        <div className="mt-12 flex flex-wrap justify-center gap-8">
-          {[
-            {
-              label: '173+ Events',
-              sub: 'Successfully delivered',
-              color: 'text-violet-600',
-            },
-            {
-              label: '50+ Brands',
-              sub: 'Repeat clients',
-              color: 'text-pink-600',
-            },
-            {
-              label: '10 Cities',
-              sub: 'Pan-India presence',
-              color: 'text-amber-600',
-            },
-          ].map((item) => (
-            <div key={item.label} className="text-center">
-              <p className={`text-xl font-800 ${item.color}`}>
-                {item.label}
-              </p>
-
-              <p className="text-xs text-gray-400 mt-1">
-                {item.sub}
-              </p>
-            </div>
-          ))}
-        </div>
-
       </div>
     </section>
   );
