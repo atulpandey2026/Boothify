@@ -6,7 +6,7 @@ const cities = ['Delhi', 'Mumbai', 'Lucknow', 'Chennai', 'Bengaluru', 'Ahmedabad
 const socialLinks = [
   {
     label: 'LinkedIn',
-    href: '#',
+    href: 'linkedin.com/company/the-autonaut-media',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -77,7 +77,7 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               <p className="text-xs font-700 uppercase tracking-widest text-gray-400 mb-1">Connect</p>
               <a href="#contact" className="nav-link text-sm">Contact</a>
-              <a href="tel:+917982032246" className="nav-link text-sm">+91 79820 32246</a>
+              <a href="tel:+918882002378" className="nav-link text-sm">+918882002378 </a>
               <a href="mailto:contact@boothify.in" className="nav-link text-sm">contact@boothify.in</a>
               <a href="#" className="nav-link text-sm">Privacy Policy</a>
             </div>
