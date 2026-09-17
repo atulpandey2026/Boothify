@@ -150,8 +150,8 @@ export default function HeroSection() {
         </div>
         <div className="mt-14 flex flex-wrap gap-8">
           {[
-            { num: '173+', label: 'Events', color: '#A78BFA' },
-            { num: '69+', label: 'Experiences', color: '#F472B6' },
+            { num: '30+', label: 'Events', color: '#A78BFA' },
+            { num: '50+', label: 'Brands', color: '#F472B6' },
             { num: '10', label: 'Cities', color: '#FCD34D' },
           ].map((s) => (
             <div key={s.label} className="flex items-baseline gap-2">
