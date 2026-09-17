@@ -148,18 +148,6 @@ export default function HeroSection() {
           <a href="#contact" className="btn-primary text-base py-4 px-8">Start Your Project →</a>
           <a href="#work" className="btn-ghost text-base py-4 px-8 border-white/30 text-white hover:border-violet-400 hover:text-violet-300">Explore Our Work &gt;</a>
         </div>
-        <div className="mt-14 flex flex-wrap gap-8">
-          {[
-            { num: '30+', label: 'Events', color: '#A78BFA' },
-            { num: '50+', label: 'Brands', color: '#F472B6' },
-            { num: '10', label: 'Cities', color: '#FCD34D' },
-          ].map((s) => (
-            <div key={s.label} className="flex items-baseline gap-2">
-              <span className="text-2xl font-800" style={{ color: s.color }}>{s.num}</span>
-              <span className="text-sm text-white/60 font-500">{s.label}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
