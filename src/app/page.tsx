@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import HeroSection from './components/HeroSection';
 import StatsBar from './components/StatsBar';
 import PortfolioSection from './components/PortfolioSection';
-import GallerySection from './components/GallerySection';
+
 import ServicesSection from './components/ServicesSection';
 import ProcessSection from './components/ProcessSection';
 import CitiesSection from './components/CitiesSection';
